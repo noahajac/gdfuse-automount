@@ -1,0 +1,16 @@
+#!/bin/bash
+
+mounts="/home/$USERNAME/Google Drive"
+gdfuse="/home/$USERNAME/.opam/default/bin/google-drive-ocamlfuse"
+
+# Wait for internet connectivity
+while ! ping -c 1 google.com >/dev/null 2>/dev/null; do
+  sleep 3
+done
+
+# Check for and mount available Google Drives
+for label in $(ls "$mounts"); do
+  $gdfuse -label "$label" -o "allow_root" "$mounts/$label"
+done
+
+exit 0
